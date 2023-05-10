@@ -4,6 +4,7 @@ var queryURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_we
 
 // GET request to the query URL
 d3.json(queryURL).then(function(data){
+console.log(data)    
     // Send the data.features and data.features object to the createFeatures function.
     createFeatures(data.features);
   });
@@ -82,24 +83,14 @@ legend.onAdd = function() {
 
 // Create map
 function createMap(earthquakes) {
-   // Define outdoors and graymap layers
-   let streetstylemap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-    maxZoom: 20,
-    id: "outdoors-v11",
-    accessToken: API_KEY
-  })
-
-  let graymap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-    maxZoom: 20,
-    id: "light-v10",
-    accessToken: API_KEY
+   
+  let graymap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+   
   });
 
   // Define a baseMaps object to hold our base layers
   let baseMaps = {
-    "Outdoors": streetstylemap,
     "Grayscale": graymap
   };
 
@@ -111,10 +102,10 @@ function createMap(earthquakes) {
   // Create our map, giving it the streetmap and earthquakes layers to display on load
   let myMap = L.map("map", {
     center: [
-      39.8282, -98.5795
+      33.7488, -84.3877
     ],
     zoom: 4,
-    layers: [streetstylemap, earthquakes]
+    layers: [graymap, earthquakes]
   });
   // Add the layer control to the map
   L.control.layers(baseMaps, overlayMaps, {
